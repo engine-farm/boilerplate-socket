@@ -1,0 +1,33 @@
+game:
+  worlds:
+    world-1:
+      name: World name 1
+      sector:
+        length:
+          x: 2
+          y: 3
+        size:
+          x: 200
+          y: 200
+#    world-2:
+#      name: World name 2
+#      sector:
+#        length:
+#          x: 1
+#          y: 1
+#        size:
+#          x: 200
+#          y: 200
+
+engine:
+  fps: 32 # free plan max: 16
+
+modules:
+  players:
+    className: PlayerModule
+    path: modules/character/character.module.ts
+
+  characters:
+    className: CharacterModule
+    path: modules/players/player.module.ts
+
