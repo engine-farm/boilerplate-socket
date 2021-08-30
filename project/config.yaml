@@ -1,11 +1,11 @@
 game:
   worlds:
     world-1:
-      name: World name 1
+      name: World name 113
       sector:
         length:
-          x: 2
-          y: 3
+          x: 1
+          y: 1
         size:
           x: 200
           y: 200
@@ -25,9 +25,10 @@ engine:
 modules:
   players:
     className: PlayerModule
-    path: modules/character/character.module.ts
+    path: modules/players/player.module.ts
 
   characters:
     className: CharacterModule
-    path: modules/players/player.module.ts
+    path: modules/character/character.module.ts
+
 

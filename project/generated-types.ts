@@ -22,14 +22,17 @@ export namespace EventsGame {
     export type PacketServer = [PacketServerTypes, any?];
 
     export enum GeneratedEventsTypesGame {
+        PlayerSelectCharacter = 0,
         CharacterMovement = 1,
         CharacterRotation = 3,
         CharacterChangeDirection = 2,
         CharacterShooting = 5,
-        PlayerSelectCharacter = 0,
     }
 
     export interface GeneratedEventsBody {
+        [GeneratedEventsTypesGame.PlayerSelectCharacter]: {
+            data: { characterId: number };
+        };
         [GeneratedEventsTypesGame.CharacterMovement]: {
             data: {
                 state: boolean;
@@ -45,18 +48,15 @@ export namespace EventsGame {
         [GeneratedEventsTypesGame.CharacterShooting]: {
             data: { weaponIndex: number };
         };
-        [GeneratedEventsTypesGame.PlayerSelectCharacter]: {
-            data: { characterId: number };
-        };
     }
 
-    export enum GeneratedActions {
-        CharacterShooting = 1,
-        CharacterChangeDirection = 2,
-        CharacterMovement = 3,
-    }
+    export enum GeneratedActions {}
 
     export type GeneratedEvents =
+        | {
+              type: GeneratedEventsTypesGame.PlayerSelectCharacter;
+              data: GeneratedEventsBody[GeneratedEventsTypesGame.PlayerSelectCharacter]['data'];
+          }
         | {
               type: GeneratedEventsTypesGame.CharacterMovement;
               data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterMovement]['data'];
@@ -72,10 +72,6 @@ export namespace EventsGame {
         | {
               type: GeneratedEventsTypesGame.CharacterShooting;
               data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterShooting]['data'];
-          }
-        | {
-              type: GeneratedEventsTypesGame.PlayerSelectCharacter;
-              data: GeneratedEventsBody[GeneratedEventsTypesGame.PlayerSelectCharacter]['data'];
           };
 
     export enum GeneratedEnumCharacterMovementDirections {

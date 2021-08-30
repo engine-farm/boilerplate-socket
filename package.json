@@ -8,7 +8,7 @@
     "agent:watch": "efg watch -p ./project",
     "agent:watch:debug": "efg watch -p ./project --debug",
     "agent:sync": "",
-    "agent:generate-types": "",
+    "agent:generate-types": "efg generate-types -p ./project --debug",
     "agent:": "",
     "agent:saync": ""
   },
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/engine-farm/boilerplate-socket#readme",
   "devDependencies": {
-    "@engine-farm/game-code": "^0.0.6",
+    "@engine-farm/game-code": "^0.0.8",
     "@engine-farm/sdk-types": "^0.0.1"
   }
 }

@@ -56,7 +56,7 @@ import { EventsGame } from "../../generated-types";
     inServer: null, //CharacterUpdateServer,
     inNetwork: null, // CharacterUpdateNetwork,
   },
-  engineMicroActions: [
+  microFunctions: [
     {
       name: "CharacterShooting",
       fn: (
