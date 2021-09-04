@@ -51,7 +51,7 @@ const FakeDBPlayers: { [index: number]: FakeUserDB } = {
 //     }
 // }
 
-console.log("FakeDBPlayers", FakeDBPlayers[0]);
+console.log("FakeDBPlayers", FakeDBPlayers);
 // process.exit()
 const ClientToPlayerId: {
   [index: string]: number;
@@ -61,7 +61,7 @@ export class UserModel {
   userId: number;
   selectedIds: {
     characterId: number;
-    platformId: number;
+    // platformId: number;
   };
 }
 
@@ -74,7 +74,11 @@ export class UserManage {
   }
 
   static set(userId: number, data: UserModel) {
-    console.log("[(" + process.env["CONTEXT"] + ") UserManage::set]", userId, EngineFarm);
+    console.log(
+      "[(" + process.env["CONTEXT"] + ") UserManage::set]",
+      userId,
+      data
+    );
     return EngineFarm.BaseManager.set(this.redisNamespace, userId, data);
   }
 
@@ -129,3 +133,10 @@ export class UserManage {
     return Promise.resolve(true);
   }
 }
+
+Object.values(FakeDBPlayers).forEach((user) => {
+  UserManage.set(user.userId, user).then(async () => {
+    const addedUser = await UserManage.get(user.userId);
+    console.log("************ ADED USER", addedUser);
+  });
+});

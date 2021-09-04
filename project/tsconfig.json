@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "module": "amd",
+      "module": "CommonJS",
       "declaration": true,
       "removeComments": true,
       "emitDecoratorMetadata": true,
@@ -18,8 +18,9 @@
       ]
     },
     "lib": [
+      "dom",
       "es5",
-      "es6"
+      "es2016"
     ],
     // "include": [
     //   "src/framework"

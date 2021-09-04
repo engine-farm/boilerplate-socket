@@ -1,28 +1,26 @@
-import * as EngineFarm from '@engine-farm/sdk-types';
-
-export class PlayerEntity extends EngineFarm.Entity {
-    metadata?:  {
-        active: {
-            characterId: number
-        }
+export class PlayerEntity {
+  metadata?: {
+    active: {
+      characterId: number;
     };
-    entityName = 'player';
-    elementId: number;
+  };
+  entityName = "player";
+  elementId: number;
 
-    constructor(partial?: Partial<PlayerEntity>) {
-        super();
-        if (partial) {
-            for (let key in partial) {
-                this[key] = partial[key];
-            }
-        }
+  constructor(partial?: Partial<PlayerEntity>) {
+    console.log("[PlayerEntity::constructor] ");
+    if (partial) {
+      for (let key in partial) {
+        this[key] = partial[key];
+      }
     }
+  }
 
-    userId: number;
+  userId: number;
 
-    equipment: {
-        weapons: [];
-    }
+  equipment: {
+    weapons: [];
+  };
 
-    characterId: number | null;
+  characterId: number | null;
 }

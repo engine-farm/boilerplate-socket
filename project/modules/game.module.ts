@@ -16,6 +16,6 @@ export const GameModule = new EngineFarm.GameInitInstance(
   FullGameConfig,
   {
     players: new Map<number, PlayerEntity>(),
-    // characters: new Map<number, CharacterEntity>(),
+    characters: new Map<number, CharacterEntity>(),
   } as GameState
 );

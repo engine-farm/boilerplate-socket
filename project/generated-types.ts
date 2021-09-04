@@ -24,8 +24,8 @@ export namespace EventsGame {
     export enum GeneratedEventsTypesGame {
         PlayerSelectCharacter = 0,
         CharacterMovement = 1,
-        CharacterRotation = 3,
         CharacterChangeDirection = 2,
+        CharacterRotation = 3,
         CharacterShooting = 5,
     }
 
@@ -39,10 +39,10 @@ export namespace EventsGame {
                 directions: GeneratedEnumCharacterMovementDirections[];
             };
         };
-        [GeneratedEventsTypesGame.CharacterRotation]: {
+        [GeneratedEventsTypesGame.CharacterChangeDirection]: {
             data: { x: number; y: number; z: number };
         };
-        [GeneratedEventsTypesGame.CharacterChangeDirection]: {
+        [GeneratedEventsTypesGame.CharacterRotation]: {
             data: { x: number; y: number; z: number };
         };
         [GeneratedEventsTypesGame.CharacterShooting]: {
@@ -50,7 +50,11 @@ export namespace EventsGame {
         };
     }
 
-    export enum GeneratedActions {}
+    export enum GeneratedActions {
+        CharacterShooting = 1,
+        CharacterChangeDirection = 2,
+        CharacterMovement = 3,
+    }
 
     export type GeneratedEvents =
         | {
@@ -62,12 +66,12 @@ export namespace EventsGame {
               data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterMovement]['data'];
           }
         | {
-              type: GeneratedEventsTypesGame.CharacterRotation;
-              data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterRotation]['data'];
-          }
-        | {
               type: GeneratedEventsTypesGame.CharacterChangeDirection;
               data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterChangeDirection]['data'];
+          }
+        | {
+              type: GeneratedEventsTypesGame.CharacterRotation;
+              data: GeneratedEventsBody[GeneratedEventsTypesGame.CharacterRotation]['data'];
           }
         | {
               type: GeneratedEventsTypesGame.CharacterShooting;

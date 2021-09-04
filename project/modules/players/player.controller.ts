@@ -29,7 +29,8 @@ export class PlayerController
   onClientEvent(
     gameEvent: EventsGame.GeneratedEvents,
     gameState: GameState,
-    connectionInfo: EngineFarm.EndpointLayer.NetworkConnectionInterface
+    connectionInfo: EngineFarm.EndpointLayer.NetworkConnectionInterface,
+    runAction?: EngineFarm.EngineLayer.EngineActionCallback
   ) {
     switch (gameEvent.type) {
       case EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter:
@@ -37,6 +38,18 @@ export class PlayerController
           "[PlayerController::onClientEvent] PlayerSelectCharacter",
           gameEvent.data
         );
+        try {
+          console.log(
+            "player controller get",
+            gameState.players.get(connectionInfo.userId)
+          );
+          gameState.players.get(connectionInfo.userId).characterId =
+            gameEvent.data.characterId;
+        } catch (e) {
+          // this error should't exists
+          console.log("error set character id", e);
+          // EngineFarm.Logs.emit("error", e.toString());
+        }
         break;
     }
   }
@@ -79,28 +92,30 @@ export class PlayerController
     } else {
       try {
         const user = await EngineFarm.UserManage.get(connectionInfo.userId);
-        if (user?.metadata?.characterId) {
-          console.log(
-            "=============== player join, create new + send to children"
-          );
-          console.log("user", user);
-          const player = new PlayerEntity({
-            elementId: connectionInfo.userId,
-            characterId: user?.metadata?.characterId,
-          });
-          gameState.players.set(connectionInfo.userId, player);
-          console.log("gameState.players", gameState.players);
-          return {
-            type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
-              .Reference,
-            data: [
-              [CharacterController, "onJoinWorld", [connectionInfo, gameState]],
-            ],
-          };
-        } else {
-          return null;
-        }
+        console.log(
+          "=============== player join, create new + send to children",
+          { user }
+        );
+
+        // create new player entity
+        const player = new PlayerEntity({
+          elementId: connectionInfo.userId,
+        });
+
+        // save player to game state
+        gameState.players.set(connectionInfo.userId, player);
+
+        // return data to another controller
+        console.log("return #1");
+        return {
+          type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
+            .Reference,
+          data: [
+            [CharacterController, "onJoinWorld", [connectionInfo, gameState]],
+          ],
+        };
       } catch (e) {
+        console.log("return #2");
         console.error(e);
         return {
           type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
