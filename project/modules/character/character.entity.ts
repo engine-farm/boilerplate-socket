@@ -28,7 +28,6 @@ export class CharacterEntity {
     }
   }
 
-  userId: number;
   characterId: number;
   name: string;
   position = new PositionEntity();

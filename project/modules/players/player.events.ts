@@ -21,11 +21,13 @@ export const PlayerEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
       const player = sectorState.players.get(connection.userId);
       if (player) {
         // remove from state characters old state (if not null)
+        let removedCharacterId;
         if (
           player.characterId &&
           sectorState.characters.has(player.characterId)
         ) {
           sectorState.characters.delete(player.characterId);
+          removedCharacterId = player.characterId;
         }
 
         // get from database
@@ -42,20 +44,44 @@ export const PlayerEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
             },
           });
 
+          // create instance character in state
+          sectorState.characters.set(selectetCharacterId, characterState);
+
           // update in state characterId
-          player.characterId = selectetCharacterId;
+          sectorState.players.update(connection.userId, [
+            [["characterId"], selectetCharacterId],
+          ]);
 
           // update database characterId
           await UserManage.update(player.userId, {
             selectedIds: { characterId: selectetCharacterId },
           });
 
+          
           // add tasks to sector
           runAction({
             addActions: [
-              
+              // removedCharacterId ? {} : {},
+              {
+                payload: data,
+                timing: {
+                  type: EngineFarm.NetworkLayer.Events.SectorEvents
+                    .ObjectActionTimingType.MaxDelay,
+                  ms: 2000,
+                },
+                action: {
+                  operation: EngineFarm.EngineLayer.EngineActionOperation.Add,
+                  type: EventsGame.GeneratedActions.CharacterMovement,
+                },
+                engineObject: {
+                  type: EngineFarm.EngineLayer.ObjectTypeManager.getByEntity(
+                    CharacterEntity
+                  ),
+                  elementId: player.characterId,
+                },
+              },
             ],
-          })
+          });
         }
       }
     }
