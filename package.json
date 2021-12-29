@@ -24,7 +24,7 @@
   "homepage": "https://github.com/engine-farm/boilerplate-socket#readme",
   "devDependencies": {
     "@engine-farm/game-code": "^0.0.8",
-    "@engine-farm/sdk-types": "/home/zgaduj/projects/sdk-types",
+    "@engine-farm/sdk-types": "^0.0.1",
     "socket.io-client": "^4.2.0"
   }
 }
