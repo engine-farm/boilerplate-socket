@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "agent:watch": "efg watch -p ./project",
-    "agent:watch:debug": "efg watch -p ./project --debug",
+    "agent:watch": "efg watch -p ./src",
+    "agent:watch:debug": "efg watch -p ./src --debug",
     "agent:sync": "",
-    "agent:generate-types": "efg generate-types -p ./project --debug",
+    "agent:generate-types": "efg generate-types -p ./src --debug",
     "agent:": "",
     "agent:saync": ""
   },
@@ -24,7 +24,6 @@
   "homepage": "https://github.com/engine-farm/boilerplate-socket#readme",
   "devDependencies": {
     "@engine-farm/game-code": "^0.0.8",
-    "@engine-farm/sdk-types": "/home/zgaduj/projects/sdk-types",
     "socket.io-client": "^4.2.0"
   }
 }

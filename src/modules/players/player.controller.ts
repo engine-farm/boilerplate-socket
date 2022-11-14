@@ -34,7 +34,7 @@ export class PlayerController
   ) {
     switch (gameEvent.type) {
       case EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter:
-        console.log(
+        EngineFarm.Logs.log(
           "[PlayerController::onClientEvent] PlayerSelectCharacter",
           gameEvent.data
         );
@@ -142,6 +142,7 @@ export class PlayerController
       //         elementId: user.selectedIds.characterId,
       //     },
       // };
+
     } else {
       // not found, search referenced?
       return null;

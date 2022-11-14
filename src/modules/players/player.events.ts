@@ -1,10 +1,11 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
 import { EventsGame } from "../../generated-types";
-import { GameState } from "modules/game-state";
+import { GameState } from "../game-state";
 import { PlayerEventType } from "../../player-events.game";
 import { CharacterRepository } from "../character/character.repository";
 import { CharacterEntity } from "../character/character.entity";
-import { UserManage } from "../../repositories/user.manage";
+import { UserManage } from '@engine-farm/sdk-types';
+import { PlayerRepository } from './player.repository';
 
 export const PlayerEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
   new EngineFarm.EndpointLayer.CreatePlayerEvent<GameState>(
@@ -12,10 +13,10 @@ export const PlayerEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
     PlayerEventType.PlayerSelectCharacter,
     {},
     {
-      characterId: EngineFarm.EndpointLayer.PlayerEventDataKeyTypes.Number,
+      characterId: EngineFarm.EndpointLayer.PlayerEventDataKeyTypes.String,
     },
     async (connection, sectorState, data, runAction) => {
-      const selectetCharacterId = data.characterId as number;
+      const selectetCharacterId = data.characterId as string;
 
       console.log("^^^^^^^^^^^^^^^^^^^^^ PlayerSelectCharacter event action");
       const player = sectorState.players.get(connection.userId);
@@ -54,6 +55,9 @@ export const PlayerEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
 
           // update database characterId
           await UserManage.update(player.userId, {
+
+          })
+          await PlayerRepository.update(player.userId, {
             selectedIds: { characterId: selectetCharacterId },
           });
 

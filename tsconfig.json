@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    //   "outDir": "./game-build",
+    "outFile": "./build/game.js",
+    "baseUrl": "./",
+    "incremental": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": [
+      "@engine-farm/game"
+    ],
+    "paths": {
+      "@engine-farm/sdk-types": [
+        "../game/src/index.ts"
+      ]
+    }
+  },
+  "lib": [
+    "dom",
+    "es5",
+    "es2016"
+  ],
+  // "include": [
+  //   "src/framework"
+  // ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/loadtest",
+    "src/test"
+  ]
+}

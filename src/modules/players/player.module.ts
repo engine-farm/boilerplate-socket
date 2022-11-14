@@ -4,11 +4,6 @@ import { PlayerController } from "./player.controller";
 import { PlayerEntity } from "./player.entity";
 import { PlayerEvents } from "./player.events";
 
-console.log('dupa');
-console.log('dupa');
-console.log('dupa');
-console.log('dupa');
-console.log('dupa');
 @EngineFarm.GBModule({
   controllers: [PlayerController],
   entity: PlayerEntity,

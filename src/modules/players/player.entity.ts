@@ -1,11 +1,11 @@
 export class PlayerEntity {
   metadata?: {
     active: {
-      characterId: number;
+      characterId: string;
     };
   };
   entityName = "player";
-  elementId: number;
+  elementId: string;
 
   constructor(partial?: Partial<PlayerEntity>) {
     console.log("[PlayerEntity::constructor] ");
@@ -16,11 +16,11 @@ export class PlayerEntity {
     }
   }
 
-  userId: number;
+  userId: string;
 
   equipment: {
     weapons: [];
   };
 
-  characterId: number | null;
+  characterId: string | null;
 }

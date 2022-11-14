@@ -1,9 +1,11 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
-import { GameState } from "modules/game-state";
+import { AbstractRepository } from "@engine-farm/sdk-types";
 import { CharacterEntity } from "./character.entity";
+import { GameState } from "../game-state";
+import { PlayerTableConfig } from "../players/player.table-config";
 
 export class CharacterModel {
-  characterId: number;
+  characterId?: string;
   position: {
     x: number;
     y: number;
@@ -11,42 +13,34 @@ export class CharacterModel {
   };
 }
 
-const FakeDBCharacters: { [index: number]: CharacterModel } = {
-  1: {
-    characterId: 1,
-    position: {
-      x: 0,
-      y: 0,
-      z: 0,
-    },
-  },
-};
-
 export class CharacterRepository {
+  private static tableName = PlayerTableConfig.tableName;
   private static redisNamespace = "e:character";
 
-  static get(characterId: number): Promise<CharacterModel> {
-    return EngineFarm.BaseManager.get(this.redisNamespace, characterId);
+  static get(characterId: string): Promise<CharacterModel> {
+    return AbstractRepository.findOne<CharacterModel>(this.tableName, {
+      characterId,
+    });
   }
 
-  static set(characterId: number, data: CharacterModel) {
+  static set(characterId: string, data: CharacterModel) {
     console.log(
       "[(" + process.env["CONTEXT"] + ") CharacterRepository::set]",
       characterId,
       data
     );
-    return EngineFarm.BaseManager.set(this.redisNamespace, characterId, data);
+    return EngineFarm.RedisManager.set(this.redisNamespace, characterId, data);
   }
 
-  static update(characterId: number, data: Partial<CharacterModel>) {
-    return EngineFarm.BaseManager.update(
+  static update(characterId: string, data: Partial<CharacterModel>) {
+    return EngineFarm.RedisManager.update(
       this.redisNamespace,
       characterId,
       data
     );
   }
 
-  static loadToState(characterId: number, gameState: GameState) {
+  static loadToState(characterId: string, gameState: GameState) {
     return this.get(characterId).then((character) => {
       if (!gameState.characters.has(characterId)) {
         return gameState.characters.set(
@@ -62,9 +56,3 @@ export class CharacterRepository {
     });
   }
 }
-
-console.log({FakeDBCharacters})
-
-Object.values(FakeDBCharacters).forEach((character) => {
-  CharacterRepository.set(character.characterId, character);
-});

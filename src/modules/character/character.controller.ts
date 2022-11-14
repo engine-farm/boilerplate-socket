@@ -1,15 +1,16 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
+import { UserManage } from "@engine-farm/sdk-types";
 import { CharacterEntity } from "./character.entity";
 import { GameState } from "../game-state";
-import { UserManage } from "../../repositories/user.manage";
 import { PlayerController } from "../players/player.controller";
 import { EventsGame } from "../../generated-types";
-import { CharacterRepository } from "./character.repository";
+import { PlayerRepository } from "../players/player.repository";
 
 export class CharacterController
   implements EngineFarm.Controller<CharacterEntity, GameState>
 {
   private _objectType: EngineFarm.EngineLayer.EngineObjectType;
+
   objectType(): EngineFarm.EngineLayer.EngineObjectType {
     if (this._objectType) {
       return this._objectType;
@@ -32,7 +33,7 @@ export class CharacterController
       case EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent.ObjectCreate:
         this.createCharacterEntity(
           gameState,
-          event.engineObject.elementId as number
+          event.engineObject.elementId as string
         );
         const nObj = new EngineFarm.EngineObject(
           event.engineObject.type,
@@ -189,7 +190,7 @@ export class CharacterController
     // }
   }
 
-  private createCharacterEntity(gameState: GameState, characterId: number) {
+  private createCharacterEntity(gameState: GameState, characterId: string) {
     const character = new CharacterEntity({
       elementId: characterId,
       characterId: characterId,
@@ -210,16 +211,17 @@ export class CharacterController
   ): Promise<EngineFarm.EngineObject<CharacterEntity> | null> {
     console.log("[CharacterController::onJoinSector]");
     const user = await UserManage.get(connectionInfo.userId);
-    if (gameState.characters.has(user.selectedIds.characterId)) {
+    const player = await PlayerRepository.getByUserId(user.userId);
+    if (gameState.characters.has(player.selectedIds.characterId)) {
       return null;
     } else {
       const obj = new EngineFarm.EngineObject<CharacterEntity>(
         this.objectType(),
-        user.selectedIds.characterId
+        player.selectedIds.characterId
       );
-      obj.metadata = {
-        userId: user.userId,
-      };
+      // obj.metadata = {
+      //   userId: user.userId,
+      // };
       return obj;
     }
   }
@@ -229,14 +231,15 @@ export class CharacterController
     gameState: GameState
   ): Promise<null | EngineFarm.NetworkLayer.Events.SectorEvents.FromWorld> {
     const user = await UserManage.get(connectionInfo.userId);
-    if (gameState.characters.has(user.selectedIds.characterId)) {
-      gameState.characters.delete(user.selectedIds.characterId);
+    const player = await PlayerRepository.getByUserId(user.userId);
+    if (gameState.characters.has(player.selectedIds.characterId)) {
+      gameState.characters.delete(player.selectedIds.characterId);
       return {
         type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
           .ObjectRemove,
         engineObject: {
           type: this.objectType(),
-          elementId: user.selectedIds.characterId,
+          elementId: player.selectedIds.characterId,
         },
       };
     } else {
@@ -245,4 +248,3 @@ export class CharacterController
     }
   }
 }
-

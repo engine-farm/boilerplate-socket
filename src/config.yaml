@@ -1,7 +1,7 @@
 game:
   worlds:
     world-1:
-      name: World name 113
+      name: World name
       sector:
         length:
           x: 1
@@ -9,18 +9,9 @@ game:
         size:
           x: 200
           y: 200
-#    world-2:
-#      name: World name 2
-#      sector:
-#        length:
-#          x: 1
-#          y: 1
-#        size:
-#          x: 200
-#          y: 200
 
 engine:
-  fps: 32 # free plan max: 16
+  fps: 16
 
 modules:
   players:

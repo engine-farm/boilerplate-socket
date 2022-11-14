@@ -31,7 +31,7 @@ export namespace EventsGame {
 
     export interface GeneratedEventsBody {
         [GeneratedEventsTypesGame.PlayerSelectCharacter]: {
-            data: { characterId: number };
+            data: { characterId: string };
         };
         [GeneratedEventsTypesGame.CharacterMovement]: {
             data: {
@@ -51,9 +51,10 @@ export namespace EventsGame {
     }
 
     export enum GeneratedActions {
-        CharacterShooting = 1,
-        CharacterChangeDirection = 2,
-        CharacterMovement = 3,
+        TEST = 1,
+        CharacterShooting = 2,
+        CharacterChangeDirection = 3,
+        CharacterMovement = 4,
     }
 
     export type GeneratedEvents =
@@ -85,5 +86,6 @@ export namespace EventsGame {
         Right,
         Up,
         Down,
+        Test,
     }
 }

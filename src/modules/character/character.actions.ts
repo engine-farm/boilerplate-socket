@@ -1,11 +1,21 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
-import { PlayerEventType } from "../../player-events.game";
 import { GameState } from "../game-state";
 import { EventsGame } from "../../generated-types";
 import { CharacterEntity } from "./character.entity";
 
 export const CharacterActions: EngineFarm.EngineLayer.EngineBuildActionType[] =
   [
+    {
+      name: "TEST",
+      fn: (
+        engineObject: EngineFarm.EngineObject<CharacterEntity["metadata"]>,
+        sectorState: GameState,
+        objectsRef: EngineFarm.EngineObject[],
+        deltaTime: number,
+        data: EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterShooting]["data"],
+        cb: EngineFarm.EngineLayer.EngineActionCallback
+      ) => {},
+    },
     {
       name: "CharacterShooting",
       fn: (

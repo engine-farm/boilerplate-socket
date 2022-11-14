@@ -1,15 +1,19 @@
 import io from "socket.io-client";
-import { EventsGame } from "../../project/generated-types";
+import { EventsGame } from "../../src/generated-types";
 
-console.log('Connecting to server')
+console.log("Connecting to server");
 const socket = io("ws://localhost:5101", {
   reconnectionDelayMax: 10000,
   auth: {
-    token: "123",
+    token: "6e57884f3e1c542eb6158287285c5cd52eaed38dc9681320c73809bb436b38d1",
   },
   query: {
     "my-key": "my-value",
   },
+});
+
+socket.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
 });
 
 socket.on("connect", () => {
@@ -18,14 +22,12 @@ socket.on("connect", () => {
   socket.emit("message", [
     EventsGame.PacketClientTypes.Authorize,
     {
-      token: "token-1",
+      token: "6e57884f3e1c542eb6158287285c5cd52eaed38dc9681320c73809bb436b38d1",
     },
   ]);
 
   setInterval(() => {
-    socket.emit("message", [
-        EventsGame.PacketClientTypes.IsALive,
-    ]);
+    socket.emit("message", [EventsGame.PacketClientTypes.IsALive]);
   }, 1000);
 });
 
@@ -45,6 +47,40 @@ socket.on("message", (data) => {
             },
           },
         ]);
+
+        setTimeout(() => {
+          console.log("set movement");
+          socket.emit("message", [
+            EventsGame.PacketClientTypes.GameEvent,
+            <
+              EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterMovement]
+            >{
+              type: EventsGame.GeneratedEventsTypesGame.CharacterMovement,
+              data: {
+                state: true,
+                directions: [
+                  EventsGame.GeneratedEnumCharacterMovementDirections.Forward,
+                ],
+              },
+            },
+          ]);
+
+          setTimeout(() => {
+            console.log("stop movement");
+            socket.emit("message", [
+              EventsGame.PacketClientTypes.GameEvent,
+              <
+                EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterMovement]
+              >{
+                type: EventsGame.GeneratedEventsTypesGame.CharacterMovement,
+                data: {
+                  state: false,
+                  directions: [],
+                },
+              },
+            ]);
+          }, 1000);
+        }, 1000);
     }
   }
 });

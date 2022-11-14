@@ -10,7 +10,7 @@ export const CharacterEvents: EngineFarm.EndpointLayer.DefinePlayerEvent[] = [
     "CharacterMovement",
     PlayerEventType.CharacterMovement,
     {
-      Directions: ["Forward", "Backward", "Left", "Right", "Up", "Down"],
+      Directions: ["Forward", "Backward", "Left", "Right", "Up", "Down", "Test"],
     },
     {
       state: EngineFarm.EndpointLayer.PlayerEventDataKeyTypes.Boolean,

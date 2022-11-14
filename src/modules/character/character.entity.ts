@@ -18,7 +18,7 @@ export class CharacterStats {
 export class CharacterEntity {
   metadata?: { [index: string]: any };
   entityName = "character";
-  elementId: number;
+  elementId: string;
 
   constructor(partial?: Partial<CharacterEntity>) {
     if (partial) {
@@ -28,7 +28,7 @@ export class CharacterEntity {
     }
   }
 
-  characterId: number;
+  characterId: string;
   name: string;
   position = new PositionEntity();
   rotation = new RotationEntity();
