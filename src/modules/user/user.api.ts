@@ -4,8 +4,7 @@ import {
   RepositoryManager,
   UserManage,
 } from "@engine-farm/sdk-types";
-import { PlayerRepository } from "../../modules/players/player.repository";
-import { UserModel } from '@engine-farm/sdk-types/types/framework/layers/repository/user/user.model';
+import { UserModel } from "@engine-farm/sdk-types/types/framework/layers/repository/user/user.model";
 
 export class UserApi
   implements EngineFarm.HttpApiLayer.ModuleRoutes<UserModel>
@@ -25,6 +24,9 @@ export class UserApi
       path: "/user/me",
       method: "get",
       callback: (request) => this.getUserData(request),
+      requirements: {
+        authorizedUser: true
+      }
     },
     {
       path: "/user/list",

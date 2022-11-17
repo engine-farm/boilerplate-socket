@@ -1,9 +1,9 @@
-import { SessionTableConfig } from "../../repositories/session/session.table-config";
 import { AbstractRepository } from "@engine-farm/sdk-types";
 import { PlayerModel } from "./player.model";
+import { PlayerTableConfig } from "./player.table-config";
 
 export class PlayerRepository {
-  private static tableName = SessionTableConfig.tableName;
+  private static tableName = PlayerTableConfig.tableName;
 
   static getByUserId(userId: string): Promise<PlayerModel> {
     return AbstractRepository.findOne<PlayerModel>(this.tableName, {

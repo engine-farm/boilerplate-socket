@@ -1,21 +1,16 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
-import { PlayerEventType } from "../../player-events.game";
 import { PlayerController } from "./player.controller";
 import { PlayerEntity } from "./player.entity";
-import { PlayerEvents } from "./player.events";
+import { PlayerSelectCharacterEvent } from "./events/player-select-character.event";
 
 @EngineFarm.GBModule({
   controllers: [PlayerController],
   entity: PlayerEntity,
-  events: PlayerEvents,
+  events: [new PlayerSelectCharacterEvent()],
   update: {
     inNetwork: null,
     inServer: null,
   },
-  // engineMicroActions: [
-  //   // {
-  //   //     name: ''
-  //   // }
-  // ],
 })
-export class PlayerModule {}
+export class PlayerModule {
+}

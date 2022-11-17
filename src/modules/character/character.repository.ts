@@ -2,11 +2,13 @@ import * as EngineFarm from "@engine-farm/sdk-types";
 import { AbstractRepository } from "@engine-farm/sdk-types";
 import { CharacterEntity } from "./character.entity";
 import { GameState } from "../game-state";
-import { PlayerTableConfig } from "../players/player.table-config";
+import { CharacterTableConfig } from "./character.table-config";
 
 export class CharacterModel {
   characterId?: string;
-  position: {
+  userId: string;
+  name: string;
+  position?: {
     x: number;
     y: number;
     z: number;
@@ -14,7 +16,8 @@ export class CharacterModel {
 }
 
 export class CharacterRepository {
-  private static tableName = PlayerTableConfig.tableName;
+  private static primaryKeyName = CharacterTableConfig.primaryKey;
+  private static tableName = CharacterTableConfig.tableName;
   private static redisNamespace = "e:character";
 
   static get(characterId: string): Promise<CharacterModel> {
@@ -23,13 +26,20 @@ export class CharacterRepository {
     });
   }
 
-  static set(characterId: string, data: CharacterModel) {
-    console.log(
-      "[(" + process.env["CONTEXT"] + ") CharacterRepository::set]",
-      characterId,
-      data
+  static async create(data: Pick<CharacterModel, "userId" | "name">) {
+    const exists = await this.findByName(data.name);
+    if (exists) {
+      return Promise.reject("Already exists");
+    }
+    return AbstractRepository.insert<CharacterModel>(
+      this.tableName,
+      data,
+      this.primaryKeyName
     );
-    return EngineFarm.RedisManager.set(this.redisNamespace, characterId, data);
+  }
+
+  static findByName(name: string) {
+    return AbstractRepository.findOne<CharacterModel>(this.tableName, { name });
   }
 
   static update(characterId: string, data: Partial<CharacterModel>) {

@@ -1,3 +1,6 @@
-import { GameModule } from '../modules/game.module';
+import { GameModule } from "../modules/game.module";
+import { GameDatabase } from "@engine-farm/sdk-types";
 
-GameModule.bootstrapSector();
+GameDatabase.initConnection().then(() => {
+  GameModule.bootstrapSector();
+});
