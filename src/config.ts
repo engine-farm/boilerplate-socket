@@ -1,5 +1,5 @@
-
 import * as EngineFarm from "@engine-farm/sdk-types";
+
 export interface ConfigWorldSettings {
   length: { x: number; y: number };
   size: { x: number; y: number };
@@ -48,6 +48,6 @@ export const FullGameConfig: EngineFarm.GameConfig = {
     },
   ],
   engineSettings: {
-    framesPerSecond: 1000 / 16,
+    framesPerSecond: 1000 / 10,
   },
 };

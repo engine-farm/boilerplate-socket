@@ -1,10 +1,14 @@
-import { EndpointLayer, EngineLayer, NetworkLayer, UserManage } from '@engine-farm/sdk-types';
+import {
+  EndpointLayer,
+  EngineLayer,
+  NetworkLayer,
+} from "@engine-farm/sdk-types";
 import { GameState } from "../../game-state";
 import { PlayerEventType } from "../../../player-events.game";
-import { CharacterRepository } from '../../character/character.repository';
-import { CharacterEntity } from '../../character/character.entity';
-import { PlayerRepository } from '../player.repository';
-import { EventsGame } from '../../../generated-types';
+import { CharacterRepository } from "../../character/character.repository";
+import { CharacterEntity } from "../../character/character.entity";
+import { PlayerRepository } from "../player.repository";
+import { EventsGame } from "../../../generated-types";
 
 export class PlayerSelectCharacterEvent
   implements
@@ -18,13 +22,12 @@ export class PlayerSelectCharacterEvent
     characterId: EndpointLayer.PlayerEventDataKeyTypes.String,
   };
 
-  async onAction(
+  onAction(
     connection: EndpointLayer.NetworkConnectionInterface,
     sectorState: GameState,
     data: { [p: string]: any },
     runAction: EngineLayer.EngineActionCallback | undefined
-  ): Promise<void> {
-
+  ): void {
     const selectetCharacterId = data.characterId as string;
 
     console.log("^^^^^^^^^^^^^^^^^^^^^ PlayerSelectCharacter event action");
@@ -41,61 +44,63 @@ export class PlayerSelectCharacterEvent
       }
 
       // get from database
-      const characterEntity = await CharacterRepository.get(
-        selectetCharacterId
-      );
-      if (characterEntity) {
-        const characterState = new CharacterEntity({
-          characterId: characterEntity.characterId,
-          position: {
-            x: characterEntity.position.x,
-            y: characterEntity.position.y,
-            z: characterEntity.position.z,
-          },
-        });
-
-        // create instance character in state
-        sectorState.characters.set(selectetCharacterId, characterState);
-
-        // update in state characterId
-        sectorState.players.update(connection.userId, [
-          [["characterId"], selectetCharacterId],
-        ]);
-
-        // update database characterId
-        await UserManage.update(player.userId, {
-
-        })
-        await PlayerRepository.update(player.userId, {
-          selectedIds: { characterId: selectetCharacterId },
-        });
-
-
-        // add tasks to sector
-        runAction({
-          addActions: [
-            // removedCharacterId ? {} : {},
-            {
-              payload: data,
-              timing: {
-                type: NetworkLayer.Events.SectorEvents
-                  .ObjectActionTimingType.MaxDelay,
-                ms: 2000,
-              },
-              action: {
-                operation: EngineLayer.EngineActionOperation.Add,
-                type: EventsGame.GeneratedActions.CharacterMovement,
-              },
-              engineObject: {
-                type: EngineLayer.ObjectTypeManager.getByEntity(
-                  CharacterEntity
-                ),
-                elementId: player.characterId,
-              },
+      CharacterRepository.get(selectetCharacterId).then((characterEntity) => {
+        if (characterEntity) {
+          const characterState = new CharacterEntity({
+            characterId: characterEntity.characterId,
+            position: {
+              x: characterEntity.position?.x || 0,
+              y: characterEntity.position?.y || 0,
+              z: characterEntity.position?.z || 0,
             },
-          ],
-        });
-      }
+          });
+
+          // create instance character in state
+          sectorState.characters.set(selectetCharacterId, characterState);
+
+          // update in state characterId
+          sectorState.players.update(connection.userId, [
+            [["characterId"], selectetCharacterId],
+          ]);
+
+          // update database characterId
+          // await UserManage.update(player.userId, {
+          //
+          // })
+          PlayerRepository.update(player.userId, {
+            selectedIds: { characterId: selectetCharacterId },
+          })
+            .then(() => {})
+            .catch((e) => {
+              console.error("error update player", e);
+            });
+
+          // add tasks to sector
+          runAction({
+            addActions: [
+              // removedCharacterId ? {} : {},
+              {
+                payload: data,
+                timing: {
+                  type: NetworkLayer.Events.SectorEvents.ObjectActionTimingType
+                    .MaxDelay,
+                  ms: 2000,
+                },
+                action: {
+                  operation: EngineLayer.EngineActionOperation.Add,
+                  type: EventsGame.GeneratedActions.CharacterMovement,
+                },
+                engineObject: {
+                  type: EngineLayer.ObjectTypeManager.getByEntity(
+                    CharacterEntity
+                  ),
+                  elementId: player.characterId,
+                },
+              },
+            ],
+          });
+        }
+      });
     }
   }
 }

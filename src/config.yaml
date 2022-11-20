@@ -12,6 +12,17 @@ game:
 
 engine:
   fps: 16
+  spatial:
+    mode: worker # worker = partition object by total count objects | sector = partition objects by location
+    move:
+      checkOffset: 5000
+      limitation:
+        by: time # time = can't move object to other sector/worker before | edge = max distance from neighbor sector
+        value: 60000 # ms
+
+    translationDimension:
+      x: x
+      y: z
 
 modules:
   players:

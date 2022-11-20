@@ -43,12 +43,27 @@ socket.on("message", (data) => {
           {
             type: EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter,
             data: {
-              characterId: 1,
+              characterId: "51a19735-5b23-43fd-a0c8-0f28f6eee80d",
             },
           },
         ]);
 
         setTimeout(() => {
+          console.log("set direction");
+          socket.emit("message", [
+            EventsGame.PacketClientTypes.GameEvent,
+            <
+              EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterChangeDirection]
+            >{
+              type: EventsGame.GeneratedEventsTypesGame
+                .CharacterChangeDirection,
+              data: {
+                x: 1,
+                y: 0,
+                z: 0,
+              },
+            },
+          ]);
           console.log("set movement");
           socket.emit("message", [
             EventsGame.PacketClientTypes.GameEvent,

@@ -13,7 +13,7 @@ export class CharacterMovementAction
   name = "CharacterMovement";
 
   onAction({
-    objectsRef,
+    objectsHelper,
     engineObject,
     sectorState,
     data,
@@ -39,9 +39,15 @@ export class CharacterMovementAction
       );
       if (characterEntity) {
         // engineObject.direction.multiplyScalar(characterEntity.move.speed * deltaTime)
-        engineObject.position.addScaledVector(
+        const newPos = engineObject.position.addScaledVector(
           characterEntity.direction,
           characterEntity.move.speed * deltaTime
+        );
+        console.log(
+          "characterEntity",
+          characterEntity.direction,
+          characterEntity.move.speed * deltaTime,
+          newPos
         );
         // const v = new Vector3().subVectors(engineObject.position, engineObject.direction)
 
@@ -57,9 +63,9 @@ export class CharacterMovementAction
                 {
                   path: ["position"],
                   data: {
-                    x: engineObject.position.x,
-                    y: engineObject.position.y,
-                    z: engineObject.position.z,
+                    x: newPos.x,
+                    y: newPos.y,
+                    z: newPos.z,
                   },
                   type: DataLayer.UpdateType.AssignObject,
                 },

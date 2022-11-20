@@ -1,23 +1,32 @@
-import { DataLayer, EngineLayer } from '@engine-farm/sdk-types';
+import { DataLayer, EngineLayer } from "@engine-farm/sdk-types";
 import { CharacterEntity } from "../character.entity";
 import { EventsGame } from "../../../generated-types";
-import { GameState } from '../../game-state';
+import { GameState, GameStateNamespace } from "../../game-state";
 
 type CharacterChangeDirectionData =
   EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterChangeDirection]["data"];
 
 export class CharacterChangeDirectionAction
-  implements EngineLayer.IAction<GameState, CharacterEntity, CharacterChangeDirectionData>
+  implements
+    EngineLayer.IAction<
+      GameState,
+      CharacterEntity,
+      CharacterChangeDirectionData
+    >
 {
   name = "CharacterChangeDirection";
 
   onAction({
     engineObject,
-    objectsRef,
+    objectsHelper,
     sectorState,
     data,
     deltaTime,
-  }: EngineLayer.IActionPayload<GameState, CharacterEntity, CharacterChangeDirectionData>): EngineLayer.EngineActionReturnType {
+  }: EngineLayer.IActionPayload<
+    GameState,
+    CharacterEntity,
+    CharacterChangeDirectionData
+  >): EngineLayer.EngineActionReturnType<GameStateNamespace> {
     console.log("[CharacterModule::action::CharacterChangeDirection]", data);
     if (!data) {
       console.error("no data");
@@ -35,13 +44,13 @@ export class CharacterChangeDirectionAction
     console.log(
       "characterEntity.direction",
       characterEntity.direction,
-      sectorState.characters.get(engineObject.elementId as string).direction
+      sectorState.characters.get(engineObject.elementId as string)?.direction
     );
 
     return {
       changes: [
         {
-          stateKey: "characters",
+          stateKey: GameStateNamespace.Characters,
           element: {
             type: engineObject.type,
             id: engineObject.elementId,

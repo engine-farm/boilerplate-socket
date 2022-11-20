@@ -1,5 +1,5 @@
 import * as EngineFarm from "@engine-farm/sdk-types";
-import { GameDatabase, RepositoryManager, UserManage } from '@engine-farm/sdk-types';
+import { UserManage } from "@engine-farm/sdk-types";
 import { CharacterEntity } from "./character.entity";
 import { GameState } from "../game-state";
 import { PlayerController } from "../players/player.controller";
@@ -212,7 +212,7 @@ export class CharacterController
     console.log("[CharacterController::onJoinSector]");
     const user = await UserManage.get(connectionInfo.userId);
     const player = await PlayerRepository.getByUserId(user.userId);
-    console.log({user,player})
+    console.log({ user, player });
     return null;
     if (gameState.characters.has(player.selectedIds.characterId)) {
       return null;
