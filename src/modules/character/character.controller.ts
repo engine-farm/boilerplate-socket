@@ -31,10 +31,7 @@ export class CharacterController
     console.log("sector event handler", this.objectType, event);
     switch (event.type) {
       case EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent.ObjectCreate:
-        this.createCharacterEntity(
-          gameState,
-          event.engineObject.elementId as string
-        );
+        this.createCharacterEntity(gameState, event.engineObject.elementId);
         const nObj = new EngineFarm.EngineObject(
           event.engineObject.type,
           event.engineObject.elementId

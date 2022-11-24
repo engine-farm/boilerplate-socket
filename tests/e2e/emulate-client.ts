@@ -2,7 +2,8 @@ import io from "socket.io-client";
 import { EventsGame } from "../../src/generated-types";
 
 console.log("Connecting to server");
-const socket = io("ws://localhost:5101", {
+const socket = io("ws://localhost:5101/", {
+  transports: ["websocket"],
   reconnectionDelayMax: 10000,
   auth: {
     token: "6e57884f3e1c542eb6158287285c5cd52eaed38dc9681320c73809bb436b38d1",
@@ -31,11 +32,13 @@ socket.on("connect", () => {
   }, 1000);
 });
 
-socket.on("message", (data) => {
-  console.log("event message", typeof data, data);
-  if (data) {
-    data = JSON.parse(data);
+socket.on("message", (packet) => {
+  if (packet) {
+    const data = JSON.parse(packet);
     switch (data[0]) {
+      case "sync":
+        console.log(packet);
+        break;
       case "authorized":
         console.log("user authorized");
         socket.emit("message", [
