@@ -1,6 +1,8 @@
 import io from "socket.io-client";
 import { EventsGame } from "../../src/generated-types";
 
+let intervalAliveSendPacket;
+
 console.log("Connecting to server");
 const socket = io("ws://localhost:5101/", {
   transports: ["websocket"],
@@ -15,6 +17,7 @@ const socket = io("ws://localhost:5101/", {
 
 socket.on("connect_error", (err) => {
   console.log(`connect_error due to ${err.message}`);
+  clearInterval(intervalAliveSendPacket);
 });
 
 socket.on("connect", () => {
@@ -23,11 +26,11 @@ socket.on("connect", () => {
   socket.emit("message", [
     EventsGame.PacketClientTypes.Authorize,
     {
-      token: "6e57884f3e1c542eb6158287285c5cd52eaed38dc9681320c73809bb436b38d1",
+      token: "b37c2154b256f2d25630a7089c562f0333b2d515e1f315c03b310e9433e8cb78",
     },
   ]);
 
-  setInterval(() => {
+  intervalAliveSendPacket = setInterval(() => {
     socket.emit("message", [EventsGame.PacketClientTypes.IsALive]);
   }, 1000);
 });
@@ -39,6 +42,12 @@ socket.on("message", (packet) => {
       case "sync":
         console.log(packet);
         break;
+      case "authorization-user-not-found":
+        console.log("authorization failed - token not found");
+        break;
+      case "authorization-failed":
+        console.log("authorization failed");
+        break;
       case "authorized":
         console.log("user authorized");
         socket.emit("message", [
@@ -46,7 +55,7 @@ socket.on("message", (packet) => {
           {
             type: EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter,
             data: {
-              characterId: "51a19735-5b23-43fd-a0c8-0f28f6eee80d",
+              characterId: "c4207d5f-c7b5-4b67-89ca-47d808c600b3",
             },
           },
         ]);
@@ -105,4 +114,6 @@ socket.on("message", (packet) => {
 
 socket.on("disconnect", () => {
   console.log("event disconnect", socket.id);
+  // @ts-ignore
+  process.exit(0);
 });

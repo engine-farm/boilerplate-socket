@@ -3,8 +3,8 @@ import {
   GameDatabase,
   RepositoryManager,
   UserManage,
+  UserModel,
 } from "@engine-farm/sdk-types";
-import { UserModel } from "@engine-farm/sdk-types/types/framework/layers/repository/user/user.model";
 
 export class UserApi
   implements EngineFarm.HttpApiLayer.ModuleRoutes<UserModel>
@@ -25,8 +25,8 @@ export class UserApi
       method: "get",
       callback: (request) => this.getUserData(request),
       requirements: {
-        authorizedUser: true
-      }
+        authorizedUser: true,
+      },
     },
     {
       path: "/user/list",
