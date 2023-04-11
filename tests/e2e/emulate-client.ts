@@ -8,7 +8,7 @@ const socket = io("ws://localhost:5101/", {
   transports: ["websocket"],
   reconnectionDelayMax: 10000,
   auth: {
-    token: "6e57884f3e1c542eb6158287285c5cd52eaed38dc9681320c73809bb436b38d1",
+    token: "79fde687c3789c0b0da99164953bd109724b6ce4cbd4f525e6ebf0ca9d9db7cb",
   },
   query: {
     "my-key": "my-value",
@@ -26,7 +26,7 @@ socket.on("connect", () => {
   socket.emit("message", [
     EventsGame.PacketClientTypes.Authorize,
     {
-      token: "b37c2154b256f2d25630a7089c562f0333b2d515e1f315c03b310e9433e8cb78",
+      token: "79fde687c3789c0b0da99164953bd109724b6ce4cbd4f525e6ebf0ca9d9db7cb",
     },
   ]);
 
@@ -55,7 +55,7 @@ socket.on("message", (packet) => {
           {
             type: EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter,
             data: {
-              characterId: "c4207d5f-c7b5-4b67-89ca-47d808c600b3",
+              characterId: "afe897a7-cd19-4219-94f2-9325d3f72390",
             },
           },
         ]);
@@ -106,7 +106,7 @@ socket.on("message", (packet) => {
                 },
               },
             ]);
-          }, 1000);
+          }, 5000);
         }, 1000);
     }
   }

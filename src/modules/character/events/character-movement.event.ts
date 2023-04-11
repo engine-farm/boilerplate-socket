@@ -1,8 +1,12 @@
-import { GameState } from '../../game-state';
-import { PlayerEventType } from '../../../player-events.game';
-import { EventsGame } from '../../../generated-types';
-import { CharacterEntity } from '../character.entity';
-import { EndpointLayer, EngineLayer, NetworkLayer } from '@engine-farm/sdk-types';
+import { GameState } from "../../game-state";
+import { PlayerEventType } from "../../../player-events.game";
+import { EventsGame } from "../../../generated-types";
+import { CharacterEntity } from "../character.entity";
+import {
+  EndpointLayer,
+  EngineLayer,
+  NetworkLayer,
+} from "@engine-farm/sdk-types";
 import PlayerEventDataKeyTypes = EndpointLayer.PlayerEventDataKeyTypes;
 
 export class CharacterMovementEvent
@@ -14,7 +18,7 @@ export class CharacterMovementEvent
   type = PlayerEventType.CharacterMovement;
 
   enums = {
-    Directions: ["Forward", "Backward", "Left", "Right", "Up", "Down"],
+    Directions: ["Forward", "Backward", "Left", "Right", "Up", "Down", "Jump"],
   };
 
   data: EndpointLayer.DefinePLayerEventSchema = {
@@ -22,8 +26,8 @@ export class CharacterMovementEvent
     directions: {
       type: PlayerEventDataKeyTypes.Enum,
       enumName: "Directions",
-      valueType: EndpointLayer.PlayerEventDataFormat.MultiValues
-    }
+      valueType: EndpointLayer.PlayerEventDataFormat.MultiValues,
+    },
   };
 
   onAction(
@@ -41,7 +45,7 @@ export class CharacterMovementEvent
             timing: {
               type: NetworkLayer.Events.SectorEvents.ObjectActionTimingType
                 .MaxDelay,
-              ms: 2000,
+              ms: 4000,
             },
             action: {
               operation: data.state

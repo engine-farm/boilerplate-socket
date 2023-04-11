@@ -77,6 +77,7 @@ export namespace EventsGame {
     Right,
     Up,
     Down,
+    Jump,
   }
 
   export enum GeneratedEnumCharacterShootingMouseEvent {

@@ -1,4 +1,5 @@
 game:
+  connectionType: UDP # UDP | SocketIO
   worlds:
     world-1:
       name: World name
