@@ -10,7 +10,7 @@ export enum PlayerEventType {
   CharacterShooting,
 
   // platform
-
+  
   // bullet
   SpawnObjectBullet,
 }

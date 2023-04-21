@@ -1,5 +1,5 @@
 game:
-  connectionType: UDP # UDP | SocketIO
+  connectionType: SocketIO
   worlds:
     world-1:
       name: World name
@@ -33,5 +33,59 @@ modules:
   characters:
     className: CharacterModule
     path: modules/character/character.module.ts
+
+collisions:
+
+  terrain:
+    - name: some-ground-1
+      workerName: terrain-worker
+      filePath: assets/models/some-terrain-1.obj
+      forObjectsGroups:
+        - character                                 # postac nie spadnie ponizej terenu
+        - bullet                                    # logika gry powinna usuwac ten obiekt
+
+    - name: some-water-1
+      workerName: terrain-worker
+      filePath: assets/models/some-water-1.obj
+      forObjectsGroups:
+        - character                                 # po wykryciu kolizji z woda, postac wolniej powinna sie poruszac
+
+  objects:
+    - workerName: objects-damage-worker             # nazwa grupy workera / worker to oddzielna maszyna dla obliczen
+      function: CollisionsGame.damageObject         # funkcja ktora zostanie uruchomiona w przypadku wykrycia kolizji
+      check:
+        when: 'beforeUpdate'                        # beforeUpdate - wywolywana jest funkcja dla obiektu przed aktualizacja danych w stanie gry
+        # sync - wywolywana jest funkcja asynchronicznie poza pętlą główną gry, zmiana stanu nastąpi przy najbliższej iteracji pętli
+        every:
+          type: frame                               # frame - odstep w klatkach / time - odstep czasowy
+          delay: 4                                  # liczba odstępu pomiędzy klatkami lub czasem
+      groups: # grupy obiektów które ze sobą kolidują
+        - character
+        - bullet
+
+    - workerName: objects-position-fix-worker
+      function: CollisionsGame.fixObjectPosition
+      check:
+        when: 'sync'
+        every:
+          type: frame
+          delay: 4
+      groups:
+        - character
+        - vehicle
+        - building
+
+    - workerName: objects-position-fix-worker
+      function: CollisionsGame.fixObjectPosition
+      check:
+        when: 'sync'
+        every:
+          type: frame
+          delay: 4
+      groups:
+        - character
+        - vehicle
+        - building
+
 
 
