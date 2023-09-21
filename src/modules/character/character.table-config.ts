@@ -1,13 +1,13 @@
-import { TableInitInterface } from "@engine-farm/sdk-types";
+import { TableInitInterface } from '@engine-farm/sdk-types';
 import { CharacterModel } from './character.repository';
 
 export const CharacterTableConfig: TableInitInterface<CharacterModel> = {
-  tableName: "characters",
-  primaryKey: "characterId",
+  tableName: 'characters',
+  primaryKey: 'characterId',
   index: [
     {
-      indexName: "name",
-      properties: (row) => row("name"),
+      indexName: 'name',
+      properties: (row) => row('name'),
     },
   ],
 };

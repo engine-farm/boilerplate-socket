@@ -1,6 +1,6 @@
-import { AbstractRepository } from "@engine-farm/sdk-types";
-import { PlayerModel } from "./player.model";
-import { PlayerTableConfig } from "./player.table-config";
+import { AbstractRepository } from '@engine-farm/sdk-types';
+import { PlayerModel } from './player.model';
+import { PlayerTableConfig } from './player.table-config';
 
 export class PlayerRepository {
   private static tableName = PlayerTableConfig.tableName;
@@ -13,7 +13,7 @@ export class PlayerRepository {
 
   static set(userId: string, data: Partial<PlayerModel>) {
     console.log(
-      "[(" + process.env["CONTEXT"] + ") UserManage::set]",
+      '[(' + process.env['CONTEXT'] + ') UserManage::set]',
       userId,
       data
     );

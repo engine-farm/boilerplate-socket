@@ -1,13 +1,13 @@
-import { PlayerEventType } from "../../../player-events.game";
-import { EndpointLayer, EngineLayer } from "@engine-farm/sdk-types";
-import { GameState } from "../../game-state";
+import { PlayerEventType } from '../../../player-events.game';
+import { EndpointLayer, EngineLayer } from '@engine-farm/sdk-types';
+import { GameState } from '../../game-state';
 
 export class CharacterRotationEvent
   implements
     EndpointLayer.DefinePlayerEvent<GameState>,
     EndpointLayer.PlayerEventAction<GameState>
 {
-  name = "CharacterRotation";
+  name = 'CharacterRotation';
   type = PlayerEventType.CharacterRotation;
   data = {
     x: EndpointLayer.PlayerEventDataKeyTypes.Number,

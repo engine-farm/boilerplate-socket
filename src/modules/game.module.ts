@@ -1,9 +1,9 @@
-import { GameState, GameStateNamespace } from "./game-state";
-import { PlayerEntity } from "./players/player.entity";
-import { CharacterEntity } from "./character/character.entity";
+import { GameState, GameStateNamespace } from './game-state';
+import { PlayerEntity } from './players/player.entity';
+import { CharacterEntity } from './character/character.entity';
 
-import * as EngineFarm from "@engine-farm/sdk-types";
-import { Config } from "@engine-farm/sdk-types";
+import * as EngineFarm from '@engine-farm/sdk-types';
+import { Config } from '@engine-farm/sdk-types';
 
 const gameState = {
   [GameStateNamespace.Players]: new EngineFarm.DataLayer.StateMap<
@@ -11,8 +11,8 @@ const gameState = {
     string
   >(GameStateNamespace.Players, {
     syncLayers: [
-      [EngineFarm.InstanceTypes.World, "*"],
-      [EngineFarm.InstanceTypes.Sector, "*"],
+      [EngineFarm.InstanceTypes.World, '*'],
+      [EngineFarm.InstanceTypes.Sector, '*'],
     ],
     entity: PlayerEntity,
     events: {
@@ -41,14 +41,14 @@ const gameState = {
     string
   >(GameStateNamespace.Characters, {
     syncLayers: [
-      [EngineFarm.InstanceTypes.World, "*"],
-      [EngineFarm.InstanceTypes.Sector, "*"],
+      [EngineFarm.InstanceTypes.World, '*'],
+      [EngineFarm.InstanceTypes.Sector, '*'],
     ],
     entity: CharacterEntity,
     events: {
       engine: {
         onSet: (newEngineObject, data) => {
-          console.log("character set", data);
+          console.log('character set', data);
           // modify new instance of EngineObject and return data to creating object in engine
           newEngineObject.position.set(
             data.position.x,
@@ -76,10 +76,10 @@ const gameState = {
 globalThis.GameState = gameState;
 
 const config = Config.getConfig();
-console.log("game module config", config);
+console.log('game module config', config);
 
 export const GameModule = new EngineFarm.GameInitInstance(
-  "world-1",
+  'world-1',
   [],
   config,
   gameState

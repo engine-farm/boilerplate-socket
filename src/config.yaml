@@ -5,7 +5,7 @@ game:
       name: World name
       sector:
         length:
-          x: 1
+          x: 2
           y: 1
         size:
           x: 200
@@ -14,12 +14,12 @@ game:
 engine:
   fps: 16
   spatial:
-    mode: worker # worker = partition object by total count objects | sector = partition objects by location
+    mode: sector # worker = partition object by total count objects | sector = partition objects by location
     move:
       checkOffset: 5000
       limitation:
         by: time # time = can't move object to other sector/worker before | edge = max distance from neighbor sector
-        value: 60000 # ms
+        value: 5000 # ms
 
     translationDimension:
       x: x

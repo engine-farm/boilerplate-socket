@@ -1,10 +1,10 @@
-import { EventsGame } from "../../../generated-types";
-import { DataLayer, EngineLayer, Euler, Vector3 } from "@engine-farm/sdk-types";
-import { GameState } from "../../game-state";
-import { CharacterEntity } from "../character.entity";
+import { EventsGame } from '../../../generated-types';
+import { DataLayer, EngineLayer, Euler, Vector3 } from '@engine-farm/sdk-types';
+import { GameState } from '../../game-state';
+import { CharacterEntity } from '../character.entity';
 
 type CharacterMovementData =
-  EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterMovement]["data"];
+  EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterMovement]['data'];
 
 type MovementDirection = EventsGame.GeneratedEnumCharacterMovementDirections;
 
@@ -12,7 +12,7 @@ export class CharacterMovementAction
   implements
     EngineLayer.IAction<GameState, CharacterEntity, CharacterMovementData>
 {
-  name = "CharacterMovement";
+  name = 'CharacterMovement';
 
   onAction({
     objectsHelper,
@@ -25,9 +25,9 @@ export class CharacterMovementAction
     CharacterEntity,
     CharacterMovementData
   >): EngineLayer.EngineActionReturnType {
-    console.log("[CharacterModule::action::CharacterMovement]");
+    console.log('[CharacterModule::action::CharacterMovement]');
     if (!data) {
-      console.error("no data");
+      console.error('no data');
       return;
     }
     if (data.state === true && data.directions.length) {
@@ -51,20 +51,20 @@ export class CharacterMovementAction
         //   characterEntity.direction,
         //   characterEntity.move.speed * deltaTime
         // );
-        console.log("characterEntity move action", oldPosition, newPosition);
+        console.log('characterEntity move action', oldPosition, newPosition);
         // const v = new Vector3().subVectors(engineObject.position, engineObject.direction)
 
         return {
           changes: [
             {
-              stateKey: "characters",
+              stateKey: 'characters',
               element: {
                 id: engineObject.elementId,
                 type: engineObject.type,
               },
               payload: [
                 {
-                  path: ["position"],
+                  path: ['position'],
                   data: {
                     x: newPosition.newPosition.x,
                     y: newPosition.newPosition.y,
@@ -73,7 +73,7 @@ export class CharacterMovementAction
                   type: DataLayer.UpdateType.AssignObject,
                 },
                 {
-                  path: ["direction"],
+                  path: ['direction'],
                   dataBeforeChange: newPosition.direction,
                   data: {
                     x: newPosition.direction.x,
@@ -88,7 +88,7 @@ export class CharacterMovementAction
         };
       } else {
         console.error(
-          "characterEntity not found",
+          'characterEntity not found',
           engineObject.elementId,
           sectorState.characters
         );
@@ -109,14 +109,14 @@ export class CharacterMovementAction
         EventsGame.GeneratedEnumCharacterMovementDirections.Forward
       )
     ) {
-      directionVector.z -= 1;
+      directionVector.z += 1;
     }
     if (
       directions.includes(
         EventsGame.GeneratedEnumCharacterMovementDirections.Backward
       )
     ) {
-      directionVector.z += 1;
+      directionVector.z -= 1;
     }
     if (
       directions.includes(

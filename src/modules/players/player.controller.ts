@@ -1,23 +1,24 @@
-import * as EngineFarm from "@engine-farm/sdk-types";
-import { GameState } from "../game-state";
-import { PlayerEntity } from "./player.entity";
-import { CharacterController } from "../character/character.controller";
-import { EventsGame } from "../../generated-types";
+import * as EngineFarm from '@engine-farm/sdk-types';
+import { GameState } from '../game-state';
+import { PlayerEntity } from './player.entity';
+import { CharacterController } from '../character/character.controller';
+import { EventsGame } from '../../generated-types';
 
 export class PlayerController
   implements EngineFarm.Controller<PlayerEntity, GameState>
 {
   private _objectType: EngineFarm.EngineLayer.EngineObjectType;
+
+  constructor() {
+    console.log('[PlayerController::constructor]');
+  }
+
   objectType(): EngineFarm.EngineLayer.EngineObjectType {
     if (this._objectType) {
       return this._objectType;
     }
     return (this._objectType =
       EngineFarm.EngineLayer.ObjectTypeManager.getByEntity(PlayerEntity));
-  }
-
-  constructor() {
-    console.log("[PlayerController::constructor]");
   }
 
   onSectorEventFromWorld(
@@ -35,19 +36,19 @@ export class PlayerController
     switch (gameEvent.type) {
       case EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter:
         EngineFarm.Logs.log(
-          "[PlayerController::onClientEvent] PlayerSelectCharacter",
+          '[PlayerController::onClientEvent] PlayerSelectCharacter',
           gameEvent.data
         );
         try {
           console.log(
-            "player controller get",
+            'player controller get',
             gameState.players.get(connectionInfo.userId)
           );
           gameState.players.get(connectionInfo.userId).characterId =
             gameEvent.data.characterId;
         } catch (e) {
           // this error should't exists
-          console.log("error set character id", e);
+          console.log('error set character id', e);
           // EngineFarm.Logs.emit("error", e.toString());
         }
         break;
@@ -55,11 +56,11 @@ export class PlayerController
   }
 
   onDisconnectSector() {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   onMoveBetweenSectors() {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   // onGameData(connectionInfo: EndpointLayer.NetworkConnectionInterface, gameState: GameState) {
@@ -68,7 +69,7 @@ export class PlayerController
 
   onInit() {
     // super.onInit();
-    console.log("[PlayerController::onInit]");
+    console.log('[PlayerController::onInit]');
   }
 
   async onJoinWorld(
@@ -76,24 +77,24 @@ export class PlayerController
     gameState: GameState,
     parentEventSource?: { controller: string }
   ): Promise<null | EngineFarm.NetworkLayer.Events.SectorEvents.FromWorld> {
-    console.log("[PlayerController::onJoinWorld] parent?", {
+    console.log('[PlayerController::onJoinWorld] parent?', {
       parentEventSource,
       connectionInfo,
     });
     if (gameState.players.has(connectionInfo.userId)) {
       // already exists
-      console.log("=============== player join, send to children");
+      console.log('=============== player join, send to children');
       return {
         type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent.Reference,
         data: [
-          [CharacterController, "onJoinWorld", [connectionInfo, gameState]],
+          [CharacterController, 'onJoinWorld', [connectionInfo, gameState]],
         ],
       };
     } else {
       try {
         const user = await EngineFarm.UserManage.get(connectionInfo.userId);
         console.log(
-          "=============== player join, create new + send to children",
+          '=============== player join, create new + send to children',
           { user }
         );
 
@@ -106,22 +107,22 @@ export class PlayerController
         gameState.players.set(connectionInfo.userId, player);
 
         // return data to another controller
-        console.log("return #1");
+        console.log('return #1');
         return {
           type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
             .Reference,
           data: [
-            [CharacterController, "onJoinWorld", [connectionInfo, gameState]],
+            [CharacterController, 'onJoinWorld', [connectionInfo, gameState]],
           ],
         };
       } catch (e) {
-        console.log("return #2");
+        console.log('return #2');
         console.error(e);
         return {
           type: EngineFarm.NetworkLayer.Events.SectorEvents.SectorEvent
             .Reference,
           data: [
-            [CharacterController, "onJoinWorld", [connectionInfo, gameState]],
+            [CharacterController, 'onJoinWorld', [connectionInfo, gameState]],
           ],
         };
       }
@@ -142,7 +143,6 @@ export class PlayerController
       //         elementId: user.selectedIds.characterId,
       //     },
       // };
-
     } else {
       // not found, search referenced?
       return null;

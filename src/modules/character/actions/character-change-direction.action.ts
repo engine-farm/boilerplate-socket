@@ -1,10 +1,10 @@
-import { DataLayer, EngineLayer } from "@engine-farm/sdk-types";
-import { CharacterEntity } from "../character.entity";
-import { EventsGame } from "../../../generated-types";
-import { GameState, GameStateNamespace } from "../../game-state";
+import { DataLayer, EngineLayer } from '@engine-farm/sdk-types';
+import { CharacterEntity } from '../character.entity';
+import { EventsGame } from '../../../generated-types';
+import { GameState, GameStateNamespace } from '../../game-state';
 
 type CharacterChangeDirectionData =
-  EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterChangeDirection]["data"];
+  EventsGame.GeneratedEventsBody[EventsGame.GeneratedEventsTypesGame.CharacterChangeDirection]['data'];
 
 export class CharacterChangeDirectionAction
   implements
@@ -14,7 +14,7 @@ export class CharacterChangeDirectionAction
       CharacterChangeDirectionData
     >
 {
-  name = "CharacterChangeDirection";
+  name = 'CharacterChangeDirection';
 
   onAction({
     engineObject,
@@ -27,9 +27,9 @@ export class CharacterChangeDirectionAction
     CharacterEntity,
     CharacterChangeDirectionData
   >): EngineLayer.EngineActionReturnType<GameStateNamespace> {
-    console.log("[CharacterModule::action::CharacterChangeDirection]", data);
+    console.log('[CharacterModule::action::CharacterChangeDirection]', data);
     if (!data) {
-      console.error("no data");
+      console.error('no data');
       return;
     }
     const characterEntity = sectorState.characters.get(
@@ -42,7 +42,7 @@ export class CharacterChangeDirectionAction
     }
 
     console.log(
-      "characterEntity.direction",
+      'characterEntity.direction',
       characterEntity.direction,
       sectorState.characters.get(engineObject.elementId as string)?.direction
     );
@@ -57,17 +57,17 @@ export class CharacterChangeDirectionAction
           },
           payload: [
             {
-              path: ["direction", "x"],
+              path: ['direction', 'x'],
               data: characterEntity.direction.x,
               type: DataLayer.UpdateType.SimpleInject,
             },
             {
-              path: ["direction", "y"],
+              path: ['direction', 'y'],
               data: characterEntity.direction.y,
               type: DataLayer.UpdateType.SimpleInject,
             },
             {
-              path: ["direction", "z"],
+              path: ['direction', 'z'],
               data: characterEntity.direction.z,
               type: DataLayer.UpdateType.SimpleInject,
             },

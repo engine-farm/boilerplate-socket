@@ -1,12 +1,15 @@
-import { GameState } from "../../game-state";
-import { PlayerEventType } from "../../../player-events.game";
-import { EventsGame } from "../../../generated-types";
-import { CharacterEntity } from "../character.entity";
+import { GameState } from '../../game-state';
+import { PlayerEventType } from '../../../player-events.game';
+import { EventsGame } from '../../../generated-types';
+import { CharacterEntity } from '../character.entity';
 import {
+  DataLayer,
   EndpointLayer,
   EngineLayer,
   NetworkLayer,
-} from "@engine-farm/sdk-types";
+  ServerState,
+} from '@engine-farm/sdk-types';
+import { PlayerEntity } from '../../players/player.entity';
 import PlayerEventDataKeyTypes = EndpointLayer.PlayerEventDataKeyTypes;
 
 export class CharacterMovementEvent
@@ -14,30 +17,46 @@ export class CharacterMovementEvent
     EndpointLayer.PlayerEventAction<GameState>,
     EndpointLayer.DefinePlayerEvent<GameState>
 {
-  name = "CharacterMovement";
+  name = 'CharacterMovement';
   type = PlayerEventType.CharacterMovement;
 
   enums = {
-    Directions: ["Forward", "Backward", "Left", "Right", "Up", "Down", "Jump"],
+    Directions: ['Forward', 'Backward', 'Left', 'Right', 'Up', 'Down', 'Jump'],
   };
 
   data: EndpointLayer.DefinePLayerEventSchema = {
     state: EndpointLayer.PlayerEventDataKeyTypes.Boolean,
     directions: {
       type: PlayerEventDataKeyTypes.Enum,
-      enumName: "Directions",
+      enumName: 'Directions',
       valueType: EndpointLayer.PlayerEventDataFormat.MultiValues,
     },
   };
 
   onAction(
     connection: EndpointLayer.NetworkConnectionInterface,
-    sectorState,
+    sectorState: ServerState,
     data,
     runAction: EngineLayer.EngineActionCallback | undefined
   ): void {
-    const player = sectorState.players.get(connection.userId);
+    const player = (
+      sectorState.players as unknown as DataLayer.StateMap<
+        PlayerEntity,
+        number | string
+      >
+    ).get(connection.userId);
     if (player.characterId) {
+      const character = (
+        sectorState.players as unknown as DataLayer.StateMap<
+          CharacterEntity,
+          number | string
+        >
+      ).get(connection.userId);
+
+      if (!character) {
+        return;
+      }
+
       runAction({
         addActions: [
           {
@@ -56,6 +75,7 @@ export class CharacterMovementEvent
             engineObject: {
               type: EngineLayer.ObjectTypeManager.getByEntity(CharacterEntity),
               elementId: player.characterId,
+              position: character.position,
             },
           },
         ],

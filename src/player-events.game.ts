@@ -9,8 +9,6 @@ export enum PlayerEventType {
   CharacterSettTarget,
   CharacterShooting,
 
-  // platform
-  
   // bullet
   SpawnObjectBullet,
 }

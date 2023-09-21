@@ -3,5 +3,5 @@ export class PlayerModel {
   userId: string;
   selectedIds?: {
     characterId?: string;
-  }
+  };
 }

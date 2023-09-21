@@ -1,13 +1,12 @@
-import * as EngineFarm from "@engine-farm/sdk-types";
-import { PositionEntity } from "../../entities/position.entity";
-import { RotationEntity } from "../../entities/rotation.entity";
-import { DirectionEntity } from "../../entities/direction.entity";
-import { MovingEntity } from "../../entities/moving.entity";
+import { PositionEntity } from '../../entities/position.entity';
+import { RotationEntity } from '../../entities/rotation.entity';
+import { DirectionEntity } from '../../entities/direction.entity';
+import { MovingEntity } from '../../entities/moving.entity';
 import {
   ActualMaxAttribute,
   ActualMaxEntity,
-} from "../../entities/actual-max.entity";
-import { BuffEntity } from "../../entities/buff.entity";
+} from '../../entities/actual-max.entity';
+import { BuffEntity } from '../../entities/buff.entity';
 
 export class CharacterStats {
   hp = new ActualMaxEntity(ActualMaxAttribute.HP, 500);
@@ -17,17 +16,8 @@ export class CharacterStats {
 
 export class CharacterEntity {
   metadata?: { [index: string]: any };
-  entityName = "character";
+  entityName = 'character';
   elementId: string;
-
-  constructor(partial?: Partial<CharacterEntity>) {
-    if (partial) {
-      for (let key in partial) {
-        this[key] = partial[key];
-      }
-    }
-  }
-
   characterId: string;
   name: string;
   position = new PositionEntity();
@@ -39,4 +29,12 @@ export class CharacterEntity {
   pressedKeys: number[] = [];
   moveToPoint: { x: number; y: number; z: number };
   moveByDirection: boolean = false;
+
+  constructor(partial?: Partial<CharacterEntity>) {
+    if (partial) {
+      for (let key in partial) {
+        this[key] = partial[key];
+      }
+    }
+  }
 }

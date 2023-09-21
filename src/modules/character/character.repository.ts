@@ -1,8 +1,8 @@
-import * as EngineFarm from "@engine-farm/sdk-types";
-import { AbstractRepository } from "@engine-farm/sdk-types";
-import { CharacterEntity } from "./character.entity";
-import { GameState } from "../game-state";
-import { CharacterTableConfig } from "./character.table-config";
+import * as EngineFarm from '@engine-farm/sdk-types';
+import { AbstractRepository } from '@engine-farm/sdk-types';
+import { CharacterEntity } from './character.entity';
+import { GameState } from '../game-state';
+import { CharacterTableConfig } from './character.table-config';
 
 export class CharacterModel {
   characterId?: string;
@@ -18,7 +18,7 @@ export class CharacterModel {
 export class CharacterRepository {
   private static primaryKeyName = CharacterTableConfig.primaryKey;
   private static tableName = CharacterTableConfig.tableName;
-  private static redisNamespace = "e:character";
+  private static redisNamespace = 'e:character';
 
   static get(characterId: string): Promise<CharacterModel> {
     return AbstractRepository.findOne<CharacterModel>(this.tableName, {
@@ -26,10 +26,10 @@ export class CharacterRepository {
     });
   }
 
-  static async create(data: Pick<CharacterModel, "userId" | "name">) {
+  static async create(data: Pick<CharacterModel, 'userId' | 'name'>) {
     const exists = await this.findByName(data.name);
     if (exists) {
-      return Promise.reject("Already exists");
+      return Promise.reject('Already exists');
     }
     return AbstractRepository.insert<CharacterModel>(
       this.tableName,

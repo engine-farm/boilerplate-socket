@@ -1,20 +1,18 @@
-import {DirectionEntity} from "./direction.entity";
-import {PositionEntity} from "./position.entity";
+import { DirectionEntity } from './direction.entity';
+import { PositionEntity } from './position.entity';
 
 export class BulletMetaDataSchema {
-    // @type()
-
+  // @type()
 }
 
 export class BulletEntity {
+  position: PositionEntity = new PositionEntity();
 
-    position: PositionEntity = new PositionEntity();
+  direction: DirectionEntity = new DirectionEntity();
 
-    direction: DirectionEntity = new DirectionEntity();
+  dmg: number;
 
-    dmg: number;
+  speed: number;
 
-    speed: number;
-
-    metadata: BulletMetaDataSchema = new BulletMetaDataSchema();
+  metadata: BulletMetaDataSchema = new BulletMetaDataSchema();
 }

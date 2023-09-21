@@ -3,12 +3,16 @@ import { EventsGame } from "../../src/generated-types";
 
 let intervalAliveSendPacket;
 
+const userToken =
+  "22473f64d7d8fc13f0478dff8b2b8dcb1afb864061faa09baea258424c45c350";
+const characterId = "c4207d5f-c7b5-4b67-89ca-47d808c600b3";
+
 console.log("Connecting to server");
 const socket = io("ws://localhost:5101/", {
   transports: ["websocket"],
   reconnectionDelayMax: 10000,
   auth: {
-    token: "79fde687c3789c0b0da99164953bd109724b6ce4cbd4f525e6ebf0ca9d9db7cb",
+    token: userToken,
   },
   query: {
     "my-key": "my-value",
@@ -26,7 +30,7 @@ socket.on("connect", () => {
   socket.emit("message", [
     EventsGame.PacketClientTypes.Authorize,
     {
-      token: "79fde687c3789c0b0da99164953bd109724b6ce4cbd4f525e6ebf0ca9d9db7cb",
+      token: userToken,
     },
   ]);
 
@@ -55,7 +59,7 @@ socket.on("message", (packet) => {
           {
             type: EventsGame.GeneratedEventsTypesGame.PlayerSelectCharacter,
             data: {
-              characterId: "afe897a7-cd19-4219-94f2-9325d3f72390",
+              characterId,
             },
           },
         ]);
@@ -72,7 +76,7 @@ socket.on("message", (packet) => {
               data: {
                 x: 1,
                 y: 0,
-                z: 0,
+                z: 1,
               },
             },
           ]);
@@ -106,6 +110,9 @@ socket.on("message", (packet) => {
                 },
               },
             ]);
+            setTimeout(() => {
+              process.exit(0);
+            }, 1000);
           }, 5000);
         }, 1000);
     }

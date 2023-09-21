@@ -1,10 +1,10 @@
-import * as EngineFarm from "@engine-farm/sdk-types";
-import { CharacterEntity } from "./character/character.entity";
-import { PlayerEntity } from "./players/player.entity";
+import * as EngineFarm from '@engine-farm/sdk-types';
+import { CharacterEntity } from './character/character.entity';
+import { PlayerEntity } from './players/player.entity';
 
 export enum GameStateNamespace {
-  Players = "players",
-  Characters = "characters",
+  Players = 'players',
+  Characters = 'characters',
 }
 
 export type GameState = EngineFarm.ServerState & {

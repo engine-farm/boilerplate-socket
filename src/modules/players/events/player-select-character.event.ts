@@ -2,20 +2,20 @@ import {
   EndpointLayer,
   EngineLayer,
   NetworkLayer,
-} from "@engine-farm/sdk-types";
-import { GameState } from "../../game-state";
-import { PlayerEventType } from "../../../player-events.game";
-import { CharacterRepository } from "../../character/character.repository";
-import { CharacterEntity } from "../../character/character.entity";
-import { PlayerRepository } from "../player.repository";
-import { EventsGame } from "../../../generated-types";
+} from '@engine-farm/sdk-types';
+import { GameState } from '../../game-state';
+import { PlayerEventType } from '../../../player-events.game';
+import { CharacterRepository } from '../../character/character.repository';
+import { CharacterEntity } from '../../character/character.entity';
+import { PlayerRepository } from '../player.repository';
+import { EventsGame } from '../../../generated-types';
 
 export class PlayerSelectCharacterEvent
   implements
     EndpointLayer.PlayerEventAction<GameState>,
     EndpointLayer.DefinePlayerEvent<GameState>
 {
-  name = "PlayerSelectCharacter";
+  name = 'PlayerSelectCharacter';
   type = PlayerEventType.PlayerSelectCharacter;
   enums = {};
   data = {
@@ -30,7 +30,7 @@ export class PlayerSelectCharacterEvent
   ): void {
     const selectetCharacterId = data.characterId as string;
 
-    console.log("^^^^^^^^^^^^^^^^^^^^^ PlayerSelectCharacter event action");
+    console.log('^^^^^^^^^^^^^^^^^^^^^ PlayerSelectCharacter event action');
     const player = sectorState.players.get(connection.userId);
     if (player) {
       // remove from state characters old state (if not null)
@@ -60,7 +60,7 @@ export class PlayerSelectCharacterEvent
 
           // update in state characterId
           sectorState.players.update(connection.userId, [
-            [["characterId"], selectetCharacterId],
+            [['characterId'], selectetCharacterId],
           ]);
 
           // update database characterId
@@ -72,7 +72,7 @@ export class PlayerSelectCharacterEvent
           })
             .then(() => {})
             .catch((e) => {
-              console.error("error update player", e);
+              console.error('error update player', e);
             });
 
           // add tasks to sector

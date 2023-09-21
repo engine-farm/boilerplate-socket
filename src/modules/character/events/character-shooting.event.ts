@@ -1,6 +1,6 @@
-import { EndpointLayer, EngineLayer } from "@engine-farm/sdk-types";
-import { GameState } from "../../game-state";
-import { PlayerEventType } from "../../../player-events.game";
+import { EndpointLayer, EngineLayer } from '@engine-farm/sdk-types';
+import { GameState } from '../../game-state';
+import { PlayerEventType } from '../../../player-events.game';
 import PlayerEventDataFormat = EndpointLayer.PlayerEventDataFormat;
 
 export class CharacterShootingEvent
@@ -8,18 +8,18 @@ export class CharacterShootingEvent
     EndpointLayer.PlayerEventAction<GameState>,
     EndpointLayer.DefinePlayerEvent<GameState>
 {
-  name = "CharacterShooting";
+  name = 'CharacterShooting';
   type = PlayerEventType.CharacterShooting;
   data: EndpointLayer.DefinePLayerEventSchema = {
     mouse: {
       type: EndpointLayer.PlayerEventDataKeyTypes.Enum,
       valueType: PlayerEventDataFormat.SingleValue,
-      enumName: "MouseEvent",
+      enumName: 'MouseEvent',
     },
   };
 
   enums = {
-    MouseEvent: ["LBMDown", "LBMUp", "RBMDown", "RBMUp"],
+    MouseEvent: ['LBMDown', 'LBMUp', 'RBMDown', 'RBMUp'],
   };
 
   onAction(

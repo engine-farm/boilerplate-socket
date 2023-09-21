@@ -6,19 +6,15 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    //   "outDir": "./game-build",
     "outFile": "./build/game.js",
     "baseUrl": "./",
     "incremental": true,
     "target": "es6",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": [
-      "@engine-farm/game"
-    ],
     "paths": {
       "@engine-farm/sdk-types": [
-        "../game/src/index.ts"
+        "../game/src/index.ts" //@todo: remove on publish repo
       ]
     }
   },

@@ -1,11 +1,11 @@
-import { HttpApiLayer } from "@engine-farm/sdk-types";
-import { CharacterModel, CharacterRepository } from "./character.repository";
+import { HttpApiLayer } from '@engine-farm/sdk-types';
+import { CharacterModel, CharacterRepository } from './character.repository';
 
 export class CharacterApi implements HttpApiLayer.ModuleRoutes<CharacterModel> {
   routes: HttpApiLayer.ModuleRoute[] = [
     {
-      path: "/game/character/create",
-      method: "post",
+      path: '/game/character/create',
+      method: 'post',
       callback: (request) => this.createCharacter(request),
       requirements: {
         authorizedUser: true,
@@ -21,7 +21,7 @@ export class CharacterApi implements HttpApiLayer.ModuleRoutes<CharacterModel> {
     };
     if (!data.name) {
       return {
-        error: { message: "character name required" },
+        error: { message: 'character name required' },
         httpStatus: 400,
       };
     }
@@ -35,6 +35,6 @@ export class CharacterApi implements HttpApiLayer.ModuleRoutes<CharacterModel> {
           name: res.name,
         },
       };
-    })
+    });
   }
 }

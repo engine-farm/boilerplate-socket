@@ -1,3 +1,3 @@
 export class MovingEntity {
-    speed: number = 4;
+  speed: number = 4;
 }
